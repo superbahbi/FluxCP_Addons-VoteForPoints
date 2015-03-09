@@ -102,18 +102,17 @@ if (isset($_POST['id']))
 							case "cash":
 								// insert or update cashpoints
 								$cashpoints_var = "#CASHPOINTS";
-								$sql = "UPDATE $cp_tbl SET value = value + ? WHERE key = ? AND account_id = ?";
+								$sql = "UPDATE {$server->loginDatabase}.$cp_tbl SET `value` = value + ? WHERE `key` = ? AND `account_id` = ?";
 								$sth = $server->connection->getStatement($sql);
-								$sth->execute(array((int) $res->votepoints, $cashpoints_var, $account_id));
-
+								$sth->execute(array($res->votepoints, $cashpoints_var, $account_id));
+								
 								// account doesn't have a record for cashpoints
 								// so we will add a row
 								if ( ! $sth->rowCount())
 								{
-									$sql = "INSERT INTO $cp_tbl VALUES (0, ?, ?, 2, ?)";
+									$sql = "INSERT INTO {$server->loginDatabase}.$cp_tbl VALUES(?,?,0,?)";
 									$sth = $server->connection->getStatement($sql);
-									$bind = array($cashpoints_var, $res->votepoints, $account_id);
-									$sth->execute($bind);
+									$sth->execute(array($account_id, $cashpoints_var, $res->votepoints));
 
 									if ( ! $sth->rowCount())
 										$errorMessage = sprintf(Flux::message("UnableToVote"), 4);
