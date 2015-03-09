@@ -75,7 +75,7 @@ if (!function_exists("getCashPoints"))
 	function getCashPoints($account_id, $server)
 	{
 		$cp_tbl = Flux::config('FluxTables.cashpoints');
-		$sql = "SELECT value FROM $cp_tbl WHERE account_id = ? AND key = '#CASHPOINTS'";
+		$sql = "SELECT value FROM $cp_tbl WHERE account_id = ? AND `key` = '#CASHPOINTS'";
 		$sth = $server->connection->getStatement($sql);
 		$sth->execute(array((int) $account_id));
 
