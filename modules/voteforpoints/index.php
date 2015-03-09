@@ -124,14 +124,13 @@ if (isset($_POST['id']))
 								$sql = "UPDATE $server->loginDatabase.cp_credits SET balance = balance + ? WHERE account_id = ?";
 								$sth = $server->connection->getStatement($sql);
 								$sth->execute(array((int) $res->votepoints, $account_id));
-
 								if ( ! $sth->rowCount())
 								{
 									// insert new credits row
 									$sql = "INSERT INTO $server->loginDatabase.cp_credits VALUES (?, ?, NULL, NULL)";
 									$sth = $server->connection->getStatement($sql);
-									$sth->execute(array($account, $res->votepoints));
-
+									$sth->execute(array($account_id, $res->votepoints));
+			
 									if ( ! $sth->rowCount())
 										$errorMessage = sprintf(Flux::message("UnableToVote"), 6);
 								}
